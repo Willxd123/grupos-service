@@ -18,8 +18,8 @@ services:
       - PORT=3001
     restart: unless-stopped
     networks:
-      - app-network
+      - microservicios-topicos
 
 networks:
-  app-network:
-    driver: bridge
+  microservicios-topicos:
+    external: true
