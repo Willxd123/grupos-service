@@ -45,13 +45,12 @@ export class CreateGrupoDto {
   docenteId: number;
 
   @ApiProperty({
-    description: 'Gestión del grupo (formato: periodo-año, ej: 1-2025, 2-2025)',
-    example: '1-2025',
+    description: 'ID de la gestión',
+    example: 1,
   })
   @IsNotEmpty({ message: 'La gestión es obligatoria' })
-  @IsString({ message: 'La gestión debe ser texto' })
-  @Matches(/^[1-2]-\d{4}$/, { 
-    message: 'La gestión debe tener el formato periodo-año (1-2025 o 2-2025)' 
-  })
-  gestion: string;
+  @Type(() => Number)
+  @IsInt({ message: 'La gestión debe ser un número entero' })
+  @IsPositive({ message: 'La gestión debe ser un número positivo' })
+  gestionId: number;
 }
