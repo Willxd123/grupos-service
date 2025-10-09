@@ -42,10 +42,10 @@ export class GrupoService {
       return false;
     }
   }
-  private async validarDocente(materiaId: number): Promise<boolean> {
+  private async validarDocente(docenteId: number): Promise<boolean> {
     try {
       await this.httpService
-        .get(`http://localhost:3002/api/docentes/${materiaId}`)
+        .get(`http://localhost:3002/api/docentes/${docenteId}`)
         .toPromise();
       return true;
     } catch {
@@ -66,6 +66,23 @@ export class GrupoService {
 
   async update(id: number, updateGrupoDto: UpdateGrupoDto): Promise<Grupo> {
     await this.findOne(id);
+  
+    // Si se intenta cambiar materiaId, validar que existe
+    if (updateGrupoDto.materiaId) {
+      const materiaExiste = await this.validarMateria(updateGrupoDto.materiaId);
+      if (!materiaExiste) {
+        throw new NotFoundException('Materia no encontrada');
+      }
+    }
+  
+    // Si se intenta cambiar docenteId, validar que existe
+    if (updateGrupoDto.docenteId) {
+      const docenteExiste = await this.validarDocente(updateGrupoDto.docenteId);
+      if (!docenteExiste) {
+        throw new NotFoundException('Docente no encontrado');
+      }
+    }
+  
     await this.grupoRepository.update(id, updateGrupoDto);
     return this.findOne(id);
   }

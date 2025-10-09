@@ -18,13 +18,13 @@ export class Grupo {
   @Column({ name: 'docente_id' })
   docenteId: number;
 
-  @Column({ type: 'varchar', length: 255 })
-  gestion: string;
+  @Column({ name: 'gestion_id' })
+  gestionId: number;
 
-  @CreateDateColumn({ name: 'created_at' })
+  @CreateDateColumn({ name: 'created_at', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
-
-  @UpdateDateColumn({ name: 'updated_at' })
+  
+  @UpdateDateColumn({ name: 'updated_at', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
   updatedAt: Date;
 
   @OneToMany(() => Horario, (horario) => horario.grupo)
