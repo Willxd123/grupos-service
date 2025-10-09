@@ -11,10 +11,10 @@ export class Horario {
   @Column({ type: 'varchar', length: 255 })
   dia: string;
 
-  @Column({ type: 'time' })
+  @Column({ type: 'time', name: 'hora_inicio' })  
   horaInicio: string;
 
-  @Column({ type: 'time' })
+  @Column({ type: 'time', name: 'hora_fin' })     
   horaFin: string;
 
   @Column({ name: 'grupo_id' })

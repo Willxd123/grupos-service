@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { CreateGrupoDto } from './dto/create-grupo.dto';
 import { UpdateGrupoDto } from './dto/update-grupo.dto';
 import { Grupo } from './entities/grupo.entity';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable()
 export class GrupoService {
@@ -90,5 +91,44 @@ export class GrupoService {
   async remove(id: number): Promise<void> {
     const grupo = await this.findOne(id);
     await this.grupoRepository.remove(grupo);
+  }
+
+  //selecionar materias:
+  async findByMateria(materiaId: number): Promise<any[]> {
+    // Validar que la materia existe
+    const materiaExiste = await this.validarMateria(materiaId);
+    if (!materiaExiste) {
+      throw new NotFoundException('Materia no encontrada');
+    }
+  
+    // Obtener los grupos de esa materia
+    const grupos = await this.grupoRepository.find({ 
+      where: { materiaId },
+      relations: ['horarios']
+    });
+  
+    // Enriquecer cada grupo con info del docente
+    const gruposEnriquecidos = await Promise.all(
+      grupos.map(async (grupo) => {
+        let docenteInfo = null;
+  
+        // Obtener info del docente
+        try {
+          const response = await firstValueFrom(
+            this.httpService.get(`http://localhost:3002/api/docentes/${grupo.docenteId}`)
+          );
+          docenteInfo = response.data;
+        } catch (error) {
+          console.error(`Error al obtener docente ${grupo.docenteId}`);
+        }
+  
+        return {
+          ...grupo,
+          docente: docenteInfo
+        };
+      })
+    );
+  
+    return gruposEnriquecidos;
   }
 }

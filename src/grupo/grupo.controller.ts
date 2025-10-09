@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  HttpCode,
+  HttpStatus,
+} from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { GrupoService } from './grupo.service';
 import { CreateGrupoDto } from './dto/create-grupo.dto';
@@ -47,5 +57,13 @@ export class GrupoController {
   @ApiResponse({ status: 404, description: 'Grupo no encontrado' })
   remove(@Param('id') id: string) {
     return this.grupoService.remove(+id);
+  }
+
+  //selecionar materias
+  @Get('materia/:materiaId')
+  @ApiOperation({ summary: 'Obtener grupos por materia' })
+  @ApiResponse({ status: 200, description: 'Lista de grupos de la materia' })
+  findByMateria(@Param('materiaId') materiaId: string) {
+    return this.grupoService.findByMateria(+materiaId);
   }
 }
