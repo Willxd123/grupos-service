@@ -35,24 +35,38 @@ export class GrupoService {
 
   private async validarMateria(materiaId: number): Promise<boolean> {
     try {
-      await this.httpService
-        .get(`http://localhost:3000/api/materia/${materiaId}`)
-        .toPromise();
+      const url = `http://materias-service:3000/api/materia/${materiaId}`;
+      console.log('🔍 Validando materia:', url);
+      
+      const response = await firstValueFrom(
+        this.httpService.get(url)
+      );
+      
+      console.log('✅ Materia encontrada:', response.data);
       return true;
-    } catch {
+    } catch (error) {
+      console.error('❌ Error validando materia:', error.message);
       return false;
     }
   }
+  
   private async validarDocente(docenteId: number): Promise<boolean> {
     try {
-      await this.httpService
-        .get(`http://localhost:3002/api/docentes/${docenteId}`)
-        .toPromise();
+      const url = `http://perfil-service:3002/api/docentes/${docenteId}`;
+      console.log('🔍 Validando docente:', url);
+      
+      const response = await firstValueFrom(
+        this.httpService.get(url)
+      );
+      
+      console.log('✅ Docente encontrado:', response.data);
       return true;
-    } catch {
+    } catch (error) {
+      console.error('❌ Error validando docente:', error.message);
       return false;
     }
   }
+  
   async findAll(): Promise<Grupo[]> {
     return await this.grupoRepository.find();
   }
@@ -115,7 +129,7 @@ export class GrupoService {
         // Obtener info del docente
         try {
           const response = await firstValueFrom(
-            this.httpService.get(`http://localhost:3002/api/docentes/${grupo.docenteId}`)
+            this.httpService.get(`http://perfil-service:3002/api/docentes/${grupo.docenteId}`)
           );
           docenteInfo = response.data;
         } catch (error) {

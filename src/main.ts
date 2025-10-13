@@ -42,7 +42,7 @@ async function bootstrap() {
   // Iniciar la aplicación
   const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 3001;
   await app.listen(port, '0.0.0.0');
-  
+  console.log('=============ojala=======================');
   console.log(`🚀 Grupos Service running on port ${port}`);
   console.log(`📚 Swagger docs available at http://localhost:${port}/docs`);
   console.log(`🔗 API base URL: http://localhost:${port}/api`);
