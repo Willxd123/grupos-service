@@ -14,6 +14,9 @@ services:
       - DATABASE_NAME=${DATABASE_NAME}
       - DATABASE_SSL=${DATABASE_SSL}
       - PORT=3001
+    volumes:
+      - .:/app        # monta el codigo local
+      - /app/node_modules # evita conflictos con node_modules local
     restart: unless-stopped
     networks:
       - microservicios-topicos

@@ -32,6 +32,13 @@ export class HorarioController {
     return this.horarioService.findOne(+id);
   }
 
+  @Get('grupo/:grupoId')
+  @ApiOperation({ summary: 'Obtener horarios por ID de grupo' })
+  @ApiResponse({ status: 200, description: 'Lista de horarios del grupo con sus relaciones (grupo, aula, módulo)' })
+  findByGrupoId(@Param('grupoId') grupoId: string) {
+    return this.horarioService.findByGrupoId(+grupoId);
+  }
+
   @Patch(':id')
   @ApiOperation({ summary: 'Actualizar un horario' })
   @ApiResponse({ status: 200, description: 'Horario actualizado exitosamente' })

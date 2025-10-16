@@ -34,6 +34,13 @@ export class HorarioService {
     return horario;
   }
 
+  async findByGrupoId(grupoId: number): Promise<Horario[]> {
+    return await this.horarioRepository.find({
+      where: { grupo: { id: grupoId } },
+      relations: ['grupo', 'aula', 'modulo'],
+    });
+  }
+
   async update(id: number, updateHorarioDto: UpdateHorarioDto): Promise<Horario> {
     await this.findOne(id);
     await this.horarioRepository.update(id, updateHorarioDto);

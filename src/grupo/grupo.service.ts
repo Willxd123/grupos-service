@@ -72,7 +72,10 @@ export class GrupoService {
   }
 
   async findOne(id: number): Promise<Grupo> {
-    const grupo = await this.grupoRepository.findOne({ where: { id } });
+    const grupo = await this.grupoRepository.findOne({ 
+      where: { id },
+      relations: ['horarios'] // Agrega la relación con horarios
+    });
     if (!grupo) {
       throw new NotFoundException(`Grupo con ID ${id} no encontrado`);
     }
